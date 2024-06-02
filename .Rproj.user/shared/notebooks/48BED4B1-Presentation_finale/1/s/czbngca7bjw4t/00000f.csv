@@ -1,0 +1,11 @@
+"0","library(sf)"
+"2","Avis : le package ‘sf’ a été compilé avec la version R 4.2.3"
+"2","Linking to GEOS 3.9.3, GDAL 3.5.2, PROJ 8.2.1; sf_use_s2() is TRUE
+"
+"0","acled_sf <- st_as_sf(acled_df, coords = c(""longitude"", ""latitude""))"
+"0","class(acled_sf)"
+"1","[1]"
+"1"," ""sf""        "
+"1"," ""data.frame"""
+"1","
+"

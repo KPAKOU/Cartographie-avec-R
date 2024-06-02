@@ -1,0 +1,8 @@
+library(git2r)
+git2r::clone ("https://github.com/bhaskarvk/user2017.geodataviz", "E:/KPAKOU/KPAM ISEP 3/SEMESTRE 6/Projet sous R/Données")
+library(dplyr)
+internet_usage <- readxl::read_excel("E:/KPAKOU/KPAM ISEP 3/SEMESTRE 6/Projet sous R/Données/inst/extdata/africa-internet_usage-2015.xls")
+
+internet_usa <- readxl::read_excel("E:/KPAKOU/KPAM ISEP 3/SEMESTRE 6/Projet sous R/Cartographie avec R/Data/usages_internet.xls")
+Internet_africa <- inner_join(internet_usa, internet_usage ,by=c("Country Name"
+,"Country Code"))

@@ -1,0 +1,5 @@
+"0",""
+"0","senegal <- subset(acled_sf,pays==""Senegal"")"
+"0","map_leaflet <- leaflet(senegal) %>%"
+"0","  addMarkers()%>%addTiles()"
+"0","map_leaflet"

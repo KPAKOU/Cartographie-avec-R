@@ -1,0 +1,128 @@
+"0","library(dplyr)"
+"0","cvp <- st_read(""./gadm41_CPV_shp/gadm41_CPV_1.shp"")"
+"1","Reading layer `"
+"1","gadm41_CPV_1"
+"1","' from data source "
+"1","
+"
+"1","  "
+"1","`"
+"1","E:\KPAKOU\KPAM ISEP 3\SEMESTRE 5\Statistique exploratoire spatiale\TP_acled\gadm41_CPV_shp\gadm41_CPV_1.shp"
+"1","' "
+"1","
+"
+"1","  "
+"1","using driver `"
+"1","ESRI Shapefile"
+"1","'"
+"1","
+"
+"1","Simple feature collection with 22 features and 11 fields"
+"1","
+"
+"1","Geometry type: MULTIPOLYGON
+"
+"1","Dimension:     XY
+"
+"1","Bounding box:  "
+"1","xmin: -25.3618 ymin: 14.80181 xmax: -22.6568 ymax: 17.20542"
+"1","
+"
+"1","Geodetic CRS:  WGS 84
+"
+"0","cvp <- cvp[, c(""GID_1"",""GID_0"", ""COUNTRY"",""NAME_1"")]"
+"0",""
+"0","cvp$attaque <- 0"
+"0","for (i in 1:nrow(cvp)) {"
+"0","  cvp$attaque[i] <- sum(st_intersects(evmt_sf,cvp$geometry[i],sparse = F))"
+"0","}"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
+"
+"0","cvp <- cvp[, c(""GID_1"",""GID_0"", ""COUNTRY"",""NAME_1"",""attaque"", ""geometry"")]"
+"0","#View(cvp)"

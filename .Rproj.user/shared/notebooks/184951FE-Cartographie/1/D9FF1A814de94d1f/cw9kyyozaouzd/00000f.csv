@@ -1,0 +1,5 @@
+"0","library(leaflet)"
+"0","library(plyr)"
+"2","Avis : le package ‘plyr’ a été compilé avec la version R 4.2.3"
+"0","map_leaflet <- leaflet()"
+"0","map_leaflet"

@@ -1,0 +1,65 @@
+library(haven)
+library(dplyr)
+install.packages("openxlsx")
+library(openxlsx)
+
+
+library(haven)
+base1 <- read_dta("C:/Users/HP/Desktop/ADD_ENSAE/Burkina_Faso/Fichiers_Menage&Individus/s01_me_BFA2018.dta")
+base1<-  as_factor(base1)
+base1 <- base1 %>% dplyr::select("vague", "grappe", "menage", "s01q00a","s01q07")
+View(base1)
+
+library(haven)
+base2 <- read_dta("C:/Users/HP/Desktop/ADD_ENSAE/Burkina_Faso/Fichiers_Menage&Individus/s04_me_BFA2018.dta")
+base2<-  as_factor(base2)
+base2 <- base2 %>% dplyr::select("vague", "grappe", "menage", "s01q00a","s04q57" )
+View(base2)
+
+merge_data <- merge(base1, base2, by = c("vague", "grappe", "menage", "s01q00a" ) )
+
+merge_data  = merge_data %>% filter(!is.na(s01q07) , !is.na(s04q57))
+
+merge_data  = merge_data %>% rename("situation matrimoniale" = "s01q07")
+merge_data  = merge_data %>% rename("categories socio-professionelle" = "s04q57")
+
+merge_data <- merge_data %>% dplyr::select("situation matrimoniale", "categories socio-professionelle", "menage", )
+
+Data <- merge_data %>% pivot_wider(
+  names_from = "categories socio-professionelle",
+  values_from = "menage")
+Data  <- Data %>% remove_rownames %>% column_to_rownames(var="situation matrimoniale")
+View(Data_PCA_wide)
+
+Data <- merge_data %>% 
+  pivot_wider(
+    names_from = "categories socio-professionelle",
+    values_from = "menage"
+  ) %>%
+  remove_rownames() %>%
+  column_to_rownames(var = "situation matrimoniale")
+
+Data <- merge_data %>% 
+  pivot_wider(
+    names_from = "categories socio-professionelle",
+    values_from = "menage",
+    values_fn = length
+  ) %>%
+  remove_rownames() %>%
+  column_to_rownames(var = "situation matrimoniale")
+
+
+
+Data_AFC <- Data %>%
+  mutate(across(everything(), ~ifelse(is.na(.), mean(., na.rm = TRUE), .)))%>%
+  mutate(across(everything(), ~round(., digits = 0)))  
+
+
+
+View(Data)
+
+chemin_complet <- "C:/Users/HP/Desktop/Projet_statistique_R_TP3"
+
+write.xlsx(Data_AFC, file = chemin_complet)
+
+

@@ -1,0 +1,5 @@
+"0","ggplot(base_region) +"
+"0","  geom_sf(aes(fill = attaque)) +"
+"0","  geom_sf(data = evmt_sf) +  # Utilisation correcte de geom_sf avec des données spécifiques"
+"0","  scale_fill_gradient(low = ""lightblue"", high = ""darkblue"", name = ""attaque"") +"
+"0","  theme_minimal()"

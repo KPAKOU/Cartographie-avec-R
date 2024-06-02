@@ -1,0 +1,5 @@
+"0","base_region <- base %>% group_by(GID_1) %>%"
+"0","  summarize(GID_0 = first(GID_0), COUNTRY = first(COUNTRY), NAME_1 = first(NAME_1), attaque = sum(attaque))"
+"2","although coordinates are longitude/latitude, st_union assumes that they are planar
+"
+"0","            "

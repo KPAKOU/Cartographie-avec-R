@@ -1,0 +1,24 @@
+"0","library(sf)"
+"0","library(ggplot2)"
+"2","Avis : le package ‘ggplot2’ a été compilé avec la version R 4.2.3"
+"0","library(dplyr)"
+"2","Avis : le package ‘dplyr’ a été compilé avec la version R 4.2.3"
+"2","
+Attachement du package : ‘dplyr’
+
+"
+"2","Les objets suivants sont masqués depuis ‘package:plyr’:
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise, summarize
+
+"
+"2","Les objets suivants sont masqués depuis ‘package:stats’:
+
+    filter, lag
+
+"
+"2","Les objets suivants sont masqués depuis ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"

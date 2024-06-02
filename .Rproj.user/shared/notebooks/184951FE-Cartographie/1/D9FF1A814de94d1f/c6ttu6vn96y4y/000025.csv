@@ -1,0 +1,7 @@
+"0","library(leaflet)"
+"0","library(leaflet.extras)"
+"0",""
+"0","leaflet() %>%"
+"0","  addTiles() %>%"
+"0","  setView(lng = -73, lat = 3.5, zoom = 5) %>%"
+"0","  addDrawToolbar()"

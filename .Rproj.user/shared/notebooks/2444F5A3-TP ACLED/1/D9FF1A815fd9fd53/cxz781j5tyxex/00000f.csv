@@ -1,0 +1,3 @@
+"0","#chemin <- file.path(getwd())"
+"0","chemin <- ""E:/KPAKOU/KPAM ISEP 3/SEMESTRE 5/Statistique exploratoire spatiale/TP_acled"""
+"0","setwd(chemin)"

@@ -1,0 +1,2 @@
+"0","acled_df <- read.csv(""Data/ACLED-Western_Africa.csv"")"
+"0","head(acled_df, 2)"

@@ -1,0 +1,8 @@
+"0","tmap_mode(""view"")"
+"2","tmap mode set to interactive viewing
+"
+"0","tm_shape(uemoa_sf) +"
+"0","  tm_polygons(""pop_est_dens"", palette = ""-Blues"", "
+"0","    title = ""Densité de population"", contrast = 0.7, border.col = ""black"", id = ""name"","
+"0","    popup.vars=""pop_est"") +"
+"0","  tm_text(""name"", col = ""yellow"") "

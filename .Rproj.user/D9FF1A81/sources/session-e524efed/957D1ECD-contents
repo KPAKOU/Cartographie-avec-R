@@ -1,0 +1,249 @@
+---
+title: "TP_acled"
+author: "ganlea"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Partie 1
+## charger les librairies
+```{r}
+library(sf)
+library(ggplot2)
+library(dplyr)
+```
+
+## environnement de travail 
+```{r}
+chemin <- file.path(getwd())
+setwd(chemin)
+```
+
+## importation des données
+
+```{r}
+pays <- c("BEN", "BFA","CIV", "CPV","GHA","GIN", "GMB","GNB","LBR","MLI","MRT","NER","NGA","SEN","TGO")
+#base <- st_read("./gadm41_CIV_shp/gadm41_CIV_2.shp")
+
+# Initialisez la liste pour stocker les bases de données
+liste_bases <- list()
+
+for (p in pays) {
+  chemin_fichier <- paste0("./gadm41_", p, "_shp/gadm41_", p, "_2.shp")
+
+if (file.exists(chemin_fichier)) {
+  x <- st_read(chemin_fichier)
+  liste_bases[[length(liste_bases) + 1]] <- x
+} else { 
+  cat("Le fichier pour le pays ", p, " n'existe pas à l'emplacement spécifié.\n")
+  
+  next
+}
+
+}
+
+# Concaténez tous les résultats en un seul data frame à la fin
+base <- do.call(rbind, liste_bases)
+base2 <- base
+#civ <- st_read("./gadm41_CIV_shp/gadm41_CIV_2.shp")
+#ghana <- st_read("gadm41_GHA_2.shp")
+#togo <- st_read("gadm41_TGO_2.shp")
+#faso <- st_read("gadm41_BFA_2.shp")
+#filtre <- rbind(civ,ghana,togo,faso)
+#base <- filtre
+
+
+```
+```{r}
+ggplot(data = base) + geom_sf() 
+```
+
+
+```{r}
+evmt<-read.csv("ACLED-Western_Africa.csv")
+#transformer en dataframe contenant la geometrie
+evmt_sf <- st_as_sf(evmt, coords = c("longitude", "latitude"))
+st_crs(evmt_sf) <- 4326
+
+#sf_use_s2(F)
+#base_ac <- st_intersection(evmt_sf, base)
+#View(base_ac)
+#class(evmt_sf)
+#head(evmt_sf)
+```
+
+# representation
+```{r}
+ggplot(data = evmt_sf) + geom_sf() 
+```
+## calcul du nombre d'évenements par départements
+```{r}
+#base$attaque <- nrow(st_intersection(base_ac,base$geometry))
+sf_use_s2(F)
+base$attaque <- 0
+for (i in 1:nrow(base)) {
+  base$attaque[i] <- nrow(st_intersection(evmt_sf,base$geometry[i]))
+  
+}
+```
+## autre méthode
+```{r}
+base$attaque <- 0
+for (i in 1:nrow(base)) {
+  base$attaque[i] <- sum(st_intersects(evmt_sf,base$geometry[i],sparse = F))
+  
+}
+```
+
+## représentation
+
+```{r}
+
+ggplot(base) +
+  geom_sf(aes(fill = attaque)) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue", name = "attaque") +
+  theme_minimal()
+View(base)
+```
+
+# carte interactive des evenements par departements
+
+```{r}
+library(leaflet)
+
+# Créer une palette de couleurs en fonction du nombre d'attaques
+palette_couleurs <- colorQuantile("YlOrRd", domain = base$attaque)
+
+# Créer une carte Leaflet
+carte <- leaflet(data = base) %>%
+  addTiles() %>%
+  addPolygons(
+    color = "#fff",   # Couleur des bordures
+    weight = 1,          # Épaisseur des bordures
+    fillOpacity = 0.6,   # Opacité du remplissage
+    fillColor = ~palette_couleurs(base$attaque),
+    label = paste(base$NAME_2, ": ", base$attaque)  
+    
+  )
+carte
+```
+
+## aggreger les évenements par régions
+```{r}
+base_region <- base %>% group_by(GID_1) %>%
+  summarize(GID_0 = first(GID_0), COUNTRY = first(COUNTRY),NAME_1 = first(NAME_1), attaque = sum(attaque))
+
+            
+```
+
+## cas du cap vert
+
+```{r}
+View(cvp)
+cvp <- st_read("./gadm41_CPV_shp/gadm41_CPV_1.shp")
+cvp <- select(cvp, GID_1, GID_0, COUNTRY,NAME_1)
+
+cvp$attaque <- 0
+for (i in 1:nrow(cvp)) {
+  cvp$attaque[i] <- sum(st_intersects(evmt_sf,cvp$geometry[i],sparse = F))
+}
+
+cvp <- cvp[, c("GID_1","GID_0", "COUNTRY","NAME_1", "attaque", "geometry")]
+View(cvp)
+```
+
+## fusionner tout les pays
+
+```{r}
+base_region <- rbind(base_region, cvp)
+```
+
+
+
+```{r}
+ggplot(base_region) +
+  geom_sf(aes(fill = attaque)) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue", name = "attaque") +
+  theme_minimal()
+```
+# carte interactive des evenements par regions
+```{r}
+library(leaflet)
+# Créer une palette de couleurs en fonction du nombre d'attaques
+palette_couleurs <- colorQuantile("YlOrRd", domain = base_region$attaque)
+
+# Créer une carte Leaflet
+carte <- leaflet(data = base_region) %>%
+  addTiles() %>%
+  addPolygons(
+    color = "#fff",   # Couleur des bordures
+    weight = 1,          # Épaisseur des bordures
+    fillOpacity = 0.6,   # Opacité du remplissage
+    fillColor = ~palette_couleurs(base_region$attaque),
+    label = paste(base_region$NAME_1, ": ", base_region$attaque)  
+    
+  )
+carte
+```
+
+## aggreger les évenements par pays
+```{r}
+base_pays <- base_region %>% group_by(GID_0) %>%
+  summarize( COUNTRY = first(COUNTRY), attaque = sum(attaque))
+```
+
+
+```{r}
+ggplot(base_pays) +
+  geom_sf(aes(fill = attaque)) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue", name = "attaque") +
+  theme_minimal()
+```
+
+# carte interactive des evenements par pays
+```{r}
+library(leaflet)
+# Créer une palette de couleurs en fonction du nombre d'attaques
+palette_couleurs <- colorQuantile("YlOrRd", domain = base_region$attaque)
+
+# Créer une carte Leaflet
+carte <- leaflet(data = base_pays) %>%
+  addTiles() %>%
+  addPolygons(
+    color = "#fff",   # Couleur des bordures
+    weight = 1,          # Épaisseur des bordures
+    fillOpacity = 0.6,   # Opacité du remplissage
+    fillColor = ~palette_couleurs(base_pays$attaque),
+    label = paste(base_pays$COUNTRY, ": ", base_pays$attaque)  
+    
+  )
+carte
+```
+
+
+# Partie 2
+## creer l'objet raster
+```{r}
+
+library(raster)
+
+#Créer un raster vide avec une résolution de 10 km couvrant les pays de la CEDEAO
+rast <- raster(extent(base_pays), res = 6.21)
+# Rasteriser les événements pour compter le nombre d'événements par cellule de raster
+rast_count <- rasterize(evmt_sf, rast, field = 1, fun = "count")
+# Afficher le raster
+plot(rast_count)
+
+```
+
+
+
+
+
+
+
+

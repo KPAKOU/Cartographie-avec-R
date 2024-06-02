@@ -1,0 +1,13 @@
+"0","evmt<-read.csv(""ACLED-Western_Africa.csv"")"
+"0","#transformer en dataframe contenant la geometrie"
+"0","evmt_sf <- st_as_sf(evmt, coords = c(""longitude"", ""latitude""))"
+"0","st_crs(evmt_sf) <- 4326"
+"0",""
+"0","sf_use_s2(F)"
+"2","Spherical geometry (s2) switched off
+"
+"0","base_ac <- st_intersection(evmt_sf, base)"
+"2","although coordinates are longitude/latitude, st_intersection assumes that they are
+planar
+"
+"2","Avis : attribute variables are assumed to be spatially constant throughout all geometries"
